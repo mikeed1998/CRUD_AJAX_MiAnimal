@@ -171,7 +171,7 @@
                     if(response) {
                         $('#registro-animal')[0].reset();
                         toastr.success('El registro se ingreso correctamente.', 'Nuevo registro', {timeOut: 3000});
-                        $('#tabla-animal').DataTable.ajax.reload();
+                        $('#tabla-animal').DataTable().ajax.reload();
                     }
                 }
             });
