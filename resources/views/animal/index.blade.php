@@ -122,7 +122,63 @@
                 </div>
             </div>
         </div>
-  
+        
+        <!-- Modal para editar datos -->
+
+        <div class="modal fade" id="animal_edit_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar animal</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="animal_edit_modal">
+                        <div class="modal-body">
+                        
+                            @csrf
+                            <input type="hidden" id="txtId2" name="txtId2">
+                            <div class="mb-3 mt-3">
+                                <label for="txtNombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="txtNombre2">     
+                            </div>
+                            <select class="form-select" id="selEspecie2" name="selEspecie2" aria-label="Default select example">
+                                <option selected>Especie</option>
+                                <option value="Gato">Gato</option>
+                                <option value="Perro">Perro</option>
+                                <option value="Ave">Ave</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                            <div class="form-group mt-3 mb-3">
+                                
+                 
+                  
+                                <label for="">Genero</label>
+                         
+                                <div class="form-check">
+                                    <input class="form-check-input" value="Macho" type="radio" name="rbGenero2" id="rbGeneroMacho2">
+                                    <label class="form-check-label" for="rbGeneroMacho2">
+                                        Macho
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" value="Hembra" type="radio" name="rbGenero2" id="rbGeneroHembra2">
+                                    <label class="form-check-label" for="rbGeneroHembra2">
+                                        Hembra
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal Eliminar -->
         <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -220,9 +276,37 @@
                         toastr.warning('El registro fue eliminado correctamente.', 'Eliminar registro', {timeOut: 3000});
                         $('#tabla-animal').DataTable().ajax.reload();
                     }, 2000);
+
+                    $('#btnEliminar').text('Eliminar');
                 }
             });
         });
+
+    </script>
+
+    <script>
+        
+        function editarAnimal($id) {
+            $.get('animal/editar/'+$id, function(animal) {
+                // Asignar los datos recuperados a la ventana modal
+                $('#txtId2').val(animal[0].id);
+                $('#txtNombre2').val(animal[0].nombre);
+                $('#selEspecie2').val(animal[0].especie);
+
+                // $('#rbGenero2').val(animal[0].genero)
+                if(animal[0].genero == "Macho") {
+                    $('input[name=rbGenero2][value="Macho"]').prop('checked', true);
+                }
+
+                if(animal[0].genero == "Hembra") {
+                    $('input[name=rbGenero2][value="Hembra"]').prop('checked', true);
+                }
+
+                $('input[name=_token]').val();
+
+                $('#animal_edit_modal').modal('toggle');
+            });
+        }
 
     </script>
 

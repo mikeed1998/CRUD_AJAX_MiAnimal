@@ -21,3 +21,6 @@ Route::get('/', function () {
 Route::get('animal', [AnimalController::class, 'index'])->name('animal.index');
 Route::post('animal', [AnimalController::class, 'registrar'])->name('animal.registrar');
 Route::get('animal/eliminar/{id}', [AnimalController::class, 'eliminar'])->name('animal.eliminar');
+Route::get('animal/editar/{id}', [AnimalController::class, 'editar'])->name('animal.editar');
+
+

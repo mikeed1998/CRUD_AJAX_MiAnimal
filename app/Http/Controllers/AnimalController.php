@@ -18,7 +18,7 @@ class AnimalController extends Controller
             $animales = DB::select("SELECT * FROM animal");
             return DataTables::of($animales)
                 ->addColumn('action', function($animales) {
-                    $acciones = '<a href="" class="btn btn-info btn-sm"> Editar </a>';
+                    $acciones = '<a href="javascript:void(0)" onclick="editarAnimal('. $animales->id .')" class="btn btn-info btn-sm"> Editar </a>';
                     $acciones .= '&nbsp; <button type="button" name="delete" id="'. $animales->id .'" class="delete btn btn-danger btn-sm"> Eliminar </button>';
                     return $acciones;
                 })
@@ -40,9 +40,22 @@ class AnimalController extends Controller
 
         return back();
     }
+
+    public function editar($id) {
+        $animal = DB::select("SELECT * FROM animal WHERE id = ?", [$id]);
+
+        return response()->json($animal);
+    }
+
+    public function actualizar(Request $request) {
+
+    }
+
+
 }
 
-
+// SELECT * FROM animal WHERE id = ani_id
+// UPDATE animal SET nombre = ani_nombre, especie = ani_especie, genero = ani_genero WHERE id = ani_id;
 
 
 
