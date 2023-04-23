@@ -30,7 +30,8 @@ class AnimalController extends Controller
     }
 
     public function registrar(Request $request) {
-        $animal = DB::select("INSERT INTO animal(nombre, especie, genero) VALUES (?, ?, ?)", [$request->nombre, $request->especie, $request->genero]);
+        $animal = DB::select("INSERT INTO animal(nombre, especie, genero) VALUES (?, ?, ?)", 
+            [$request->nombre, $request->especie, $request->genero]);
         
         return back();
     }
@@ -48,7 +49,10 @@ class AnimalController extends Controller
     }
 
     public function actualizar(Request $request) {
+        $animal = DB::select('UPDATE animal SET nombre = ?, especie = ?, genero = ? WHERE id = ?', 
+            [$request->nombre, $request->especie, $request->genero, $request->id]);
 
+        return back();
     }
 
 

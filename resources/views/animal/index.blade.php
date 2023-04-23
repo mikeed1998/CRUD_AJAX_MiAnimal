@@ -132,7 +132,7 @@
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar animal</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="animal_edit_modal">
+                    <form id="animal_edit_form">
                         <div class="modal-body">
                         
                             @csrf
@@ -205,6 +205,7 @@
     <script src="https://cdn.datatables.net/v/dt/dt-1.13.4/datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
+    {{-- Mostrar (R) --}}
     <script>
         $(document).ready(function() {
             var tablaAnimal = $('#tabla-animal').DataTable({
@@ -224,6 +225,7 @@
         });
     </script>
 
+    {{-- Crear (C) --}}
     <script>
         $('#registro-animal').submit(function(e) {
             e.preventDefault();
@@ -253,7 +255,8 @@
             });
         });
     </script>
-
+    
+    {{-- Eliminar (D) --}}
     <script>
         
         var ani_id;
@@ -284,6 +287,7 @@
 
     </script>
 
+    {{-- Editar en la vista --}}
     <script>
         
         function editarAnimal($id) {
@@ -307,6 +311,40 @@
                 $('#animal_edit_modal').modal('toggle');
             });
         }
+
+    </script>
+
+    {{-- Actualizar (U) --}}
+    <script>
+
+        $('#animal_edit_form').submit(function(e) {
+            e.preventDefault();
+            
+            var id2 = $('#txtId2').val();
+            var nombre2 = $("#txtNombre2").val();
+            var especie2 = $("#selEspecie2").val();
+            var genero2 = $("input[name=rbGenero2]:checked").val();
+            var _token2 = $("input[name=_token]").val(); 
+
+            $.ajax({
+                url: "{{ route('animal.actualizar') }}",
+                type: "POST",
+                data: {
+                    id: id2,
+                    nombre: nombre2,
+                    especie: especie2,
+                    genero: genero2,
+                    _token: _token2,
+                },
+                success: function(response) {
+                    if(response) {
+                        $('#animal_edit_modal').modal('hide');
+                        toastr.info('El registro fue actualizado correctamente.', 'Actualizar registro', {timeOut: 3000});
+                        $('#tabla-animal').DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
 
     </script>
 
